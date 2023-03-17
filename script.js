@@ -11,6 +11,20 @@ currMonth = date.getMonth();
 const months = ["January", "February", "March", "April", "May", "June", "July",
               "August", "September", "October", "November", "December"];
 
+const alertEvent = (classname) => {
+    classname = classname.replace(/\s/g,'')
+    switch (classname) {
+        case 'fs':
+            alert('First Saturday')
+            break;
+        case 'ss':
+            alert('Second Sunday')
+            break;
+        default:
+            break;
+    }
+}
+
 const renderCalendar = () => {
     let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
     lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
@@ -26,7 +40,9 @@ const renderCalendar = () => {
         // adding active class to li if the current day, month, and year matched
         let isToday = i === date.getDate() && currMonth === new Date().getMonth() 
                      && currYear === new Date().getFullYear() ? "active" : "";
-        liTag += `<li class="${isToday}">${i}</li>`;
+        let isFS = i < 8 && new Date(currYear, currMonth, i).getDay() === 6 ? "fs" : ""
+        let isSS = i > 7 && i < 15 && new Date(currYear, currMonth, i).getDay() === 0 ? "ss" : ""
+        liTag += `<li class="${isToday} ${isFS} ${isSS}" onclick="alertEvent(this.className);" >${i}</li>`;
     }
 
     for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
