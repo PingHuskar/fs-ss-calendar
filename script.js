@@ -11,14 +11,21 @@ currMonth = date.getMonth();
 const months = ["January", "February", "March", "April", "May", "June", "July",
               "August", "September", "October", "November", "December"];
 
-const alertEvent = (classname) => {
-    classname = classname.replace(/\s/g,'')
-    switch (classname) {
+const genSS = (currYear,currMonth) => {
+    // https://ingress.fandom.com/wiki/Second_Sunday
+    if (((currYear - 2022)*12 + currMonth) > 0) {
+        return `#${(currYear - 2022)*12 + currMonth}`
+    }
+    return ''
+}
+
+const alertEvent = (classname,currYear, currMonth) => {
+    switch (classname.classList.value.replace(/\s/g,'')) {
         case 'fs':
-            alert('First Saturday')
+            alert(`First Saturday`)
             break;
         case 'ss':
-            alert('Second Sunday')
+            alert(`Second Sunday ${genSS(currYear,currMonth)}`)
             break;
         default:
             break;
@@ -42,7 +49,7 @@ const renderCalendar = () => {
                      && currYear === new Date().getFullYear() ? "active" : "";
         let isFS = i < 8 && new Date(currYear, currMonth, i).getDay() === 6 ? "fs" : ""
         let isSS = i > 7 && i < 15 && new Date(currYear, currMonth, i).getDay() === 0 ? "ss" : ""
-        liTag += `<li class="${isToday} ${isFS} ${isSS}" onclick="alertEvent(this.className);" >${i}</li>`;
+        liTag += `<li class="${isToday} ${isFS} ${isSS}" onclick="alertEvent(this,currYear, currMonth);" >${i}</li>`;
     }
 
     for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
